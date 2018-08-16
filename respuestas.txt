@@ -1,0 +1,25 @@
+CREATE DATABASE pintagram;
+CREATE TABLE users (id SERIAL PRIMARY KEY, email VARCHAR(30), password VARCHAR(30));
+CREATE TABLE images (id SERIAL PRIMARY KEY, name VARCHAR(30), url VARCHAR(30), user_id INTEGER REFERENCES users(id));
+CREATE TABLE likes (user_id INTEGER REFERENCES users(id),image_id INTEGER REFERENCES images(id), PRIMARY KEY (user_id, image_id));
+CREATE TABLE tags (id SERIAL PRIMARY KEY , tag VARCHAR(30));
+CREATE TABLE image_tag (image_id INTEGER REFERENCES images (id), tag_id INTEGER REFERENCES tags(id), PRIMARY KEY(image_id,tag_id));
+INSERT INTO users (email,password) VALUES('emiliox@gmail.com',12345),('kakashi@gmail.com',54321), ('laura@gmail.com',11111);
+INSERT INTO images(name, url, user_id) VALUES ('auto','http://image.com/123.jpg', 1),('satriani','http://image.com/1233.jpg', 1);
+INSERT INTO images(name, url, user_id) VALUES ('casa','http://image.com/123.jpg', 2),('cubo','http://image.com/1233.jpg', 2);
+INSERT INTO images(name, url, user_id) VALUES ('perro','http://image.com/123.jpg', 3),('gato','http://image.com/1233.jpg', 3);
+INSERT INTO likes (user_id, image_id) VALUES (1, 1), (2, 1), (3, 1);
+INSERT INTO likes (user_id, image_id) VALUES (1, 2), (2, 2), (3, 2);
+INSERT INTO likes (user_id, image_id) VALUES (1, 3), (2, 3), (3, 3);
+INSERT INTO tags (tag) VALUES ('3D'),('Music'),('Sports'),('Animals'),('Home'),('Cars'),('Instruments'),('Nature');
+INSERT INTO image_tag (image_id, tag_id) VALUES (1, 1), (1, 3), (1, 6);
+INSERT INTO image_tag (image_id, tag_id) VALUES (2, 1), (2, 2), (2, 7);
+INSERT INTO image_tag (image_id, tag_id) VALUES (3, 1), (3, 5), (3, 8);
+INSERT INTO image_tag (image_id, tag_id) VALUES (4, 1), (4, 5), (4, 8);
+INSERT INTO image_tag (image_id, tag_id) VALUES (5, 3), (5, 4), (5, 5);
+INSERT INTO image_tag (image_id, tag_id) VALUES (6, 3), (6, 4), (6, 5);
+SELECT name, count(image_id) FROM images LEFT JOIN likes ON id = image_id WHERE id = 1 GROUP BY name;
+SELECT email ,name FROM users LEFT JOIN images ON users.id=user_id WHERE users.id = 3;
+SELECT tag,count(image_id) FROM tags LEFT JOIN image_tag ON id = tag_id WHERE id = 1 GROUP BY tag;
+
+https://www.draw.io/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=Untitled%20Diagram.xml#R7Vxdc5s4FP01ftwO4svJY%2B0mu50ms5kkO90%2B7ShGwdoC8gg5cfrrVwLJQGTW1BbgpGozE7gSXzr3XLjnSpl483TzO4Wr5TWJUDJxnWgz8T5NXBf4bsh%2FCctLaQlDrzTEFEeyU2W4wz%2BQNDrSusYRyhsdGSEJw6umcUGyDC1YwwYpJc%2FNbo8kaV51BWOkGe4WMNGtX3HElqX1LHAq%2Bx8Ix0t1ZeDIlge4%2BB5Tss7k9Sau91j8K5tTqM4l%2B%2BdLGJHnmsm7mHhzSggrt9LNHCVibNWwlcddtrRu75uijHU5wC0PeILJWj76Xzmiubw59qIGJH%2FGaQIzvjd7JBm7ky0O318scRJdwReyFlfMGR8BtTdbEop%2F8P4w4U2AG3gzZRJv7iT8bDhJ5iQhtLiOhxzxv3HknTijvBZFOT%2F2Rj0eeGW6hptGxyuYM3WXJEngKscPxX2LA1NIY5zNCGMklZ3UU142b0oi6M1gguOM2xb8WoiqsSifBvjisgJ5FKnTKXDFTpzAPN%2FeTIoXcnvJUjU4EgtEGdq04gm2XsLZh0iKGH3hXeQBW8eSxDuXvHuuvBiEssuy7sG%2BL9kjmRNvT115D9%2BQDrTbmTzNmT5%2F0j1pCVdikz8TwzC55fSFWSxaZ4ys5KAk6FEBR%2BVNiu0HBRaogVH2nYlhw5zBH6U5xVFUnLXuYRkpXDhfwQXO4qvyKp5fmW7l1YSJ8FM%2BJgWAS34ylBUAM8jgw9b5VwRnrBiyYMZ%2F%2BMjOnQ%2FBJOBPOuf7oNrnP6I7ZXOS5YxCXACKuIc%2BI%2BGls4iS1T33SaSetk604JWzuV3dxd3tLtI9VJze5x6ec7x3%2BJp33Hw52jse6vTdgXRXJ2l6hDGH2Ie5eEzpzq%2FRraMPWqGWL0B5A9V7pe4C3m4XqGHu9QR5oEGOUoh5D%2B523ubj1odNhwdnP%2FLFyd54bDAbC4KOsUDFjGMcI9QcY%2BxIUPrD6YWBo5gfHMR8EwBPNYBX%2FPPnmdDIMv5kGH%2FmDsf4M8v4IRg%2FHY3x5%2BYBtkw3xXTgnA1HdSXiWK73y%2FXz0bgOgHmELdmNkd3zu5EdGEjxgK4gWrL3QHbQovvtYbsJiKc6oiiKkRIn%2BGAsSUwymFxU1ldKaE3kRBvM%2FhbmD4Hc%2ByY7FdrwR6Hec8PFLcf6nlzD7EU1CVVWdkVZVHVMYRb9WTgGN9c6%2FYsYe5EAwDUjAu%2FtvV6RwvMq2VU8UivhpCkna7pQvaTayRSbJ61KC0UJZPipefqjSKcrrRM3TIoAg5%2F4Ziw2P6cwRrlq4OestekctQL%2F5C0I%2FN60KfB7Ttdgb0LhB7qIayX%2BsSV%2B0BJ2RtD4ga74WpF%2FEJG%2FZOYoKj%2FQ1dx1jug%2FvN0K%2Fabzg24e8xPhYUjZH%2Biy8OXo4eFU0wWDsSE8KDYYQVzXfTOYIhsNBlQL9gSAIasAoAeV%2BJ3S%2FzjGn43GeFdXf9c0sYQ%2FHcIPWgxwe5CKLeN1zGuzRwdnfA8SsKW7OboPWQ7YMQfU0r0PureUgIYoBwQaogbKAWq7KAaUpYGM39i2SeyUbeDcVYYbRDG%2Ff6HU7qogVIWB0esHkhaNAoIMvfUCQlumZryCMAVGQVRQOU2oAh2TE6%2Fq%2BK4OylBVHXXtWuy8wt%2BRXYzxVms14NViDE9NiN73Jj4z8FXm62%2FirSo70sdZ93pN6Jzw99lWkzvwe81veXePsSZj96KM%2BeUX%2Ff3wP17yelh%2BsSrOUV9y%2Fv7lGUqiN46%2BXq3DYs5AbzHCaE33V44RXYs2RrxEL%2B%2FJGPFTqZ2NEUfEiP0LOfqKEdOwn0ShSvG%2B1dvMZHT1JGPI7EGtD69nD2FLYd54%2BhDowvuOSWH3MLZTwt5XmhGcN9MM3%2Buo75%2B7BrxO1%2FftjLCxZ4QFLcWAETKMQBc17IywQWZ9BIfNGDcCuq49MBj3ExVsUeiQEDDkrK9AFxnGDgDvsiYUHPaHHoxAbFd%2FnjLbu07xMlEeDHelIZbt5tl%2B2PJPIxDvmtOze%2FnRb%2FfivW%2FTzXecbnZegWSiqhXq6US%2FkrUta3X1mrDFbUZIOkM9%2F7BlrWFfT2FLAWMAyTrU8w2efdqi1qlHiCGLWuHuhYq2qDVghNi%2FYrG3opangWxnv02qCQGNKYlD1a%2Bm%2FkignHhRUa25bxQVW96ux4LCd6u%2FPV201f7At3fxHw%3D%3D
